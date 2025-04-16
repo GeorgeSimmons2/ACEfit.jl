@@ -16,7 +16,8 @@ function ACEfit.solve(solver::ACEfit.SKLEARN_BRR, A, y)
         @warn "\nBRR did not converge to tol=$(solver.tol) after max_iter=$(solver.max_iter) iterations.\n"
     end
     c = clf.coef_
-    return Dict{String, Any}("C" => pyconvert(Array, c) )
+    @info "Pyconverted BRR coefficients: $(length(pyconvert(Array, c)))"
+    return Dict{String, Any}("C" => pyconvert(Array, c), "committee" => pyconvert(Matrix, clf.sigma_) )
 end
 
 
@@ -33,6 +34,16 @@ function ACEfit.solve(solver::ACEfit.SKLEARN_ARD, A, y)
     end
     c = clf.coef_
     return Dict{String, Any}("C" => pyconvert(Array,c) )
+end
+
+function ACEfit.solve(solver::ACEfit.POPSREGRESSION, A, y)
+    POP = pyimport("POPSRegression")."POPSRegression"
+    clf = POP(max_iter = solver.max_iter, tol = solver.tol,
+	      fit_intercept = false, compute_score = true)
+    clf.fit(A, y)
+    c = clf.coef_
+    @info "Pyconverted POPS coefficients: $(length(pyconvert(Array, c)))"
+    return Dict{String, Any}("C" => pyconvert(Array, c), "POPS_posterior" => pyconvert(Matrix, clf.hypercube_samples) )
 end
 
 end

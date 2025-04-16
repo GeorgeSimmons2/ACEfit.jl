@@ -1,3 +1,4 @@
 [deps]
 python = ">=3.8"
+POPSRegression = ">=0.3.4"
 scikit-learn = ""

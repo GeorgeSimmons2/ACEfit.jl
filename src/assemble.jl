@@ -26,6 +26,7 @@ Assemble feature matrix and target vector for given data and basis.
 """
 function assemble(data::AbstractVector{<:AbstractData}, basis)
     @info "Assembling linear problem."
+    
     rows = Array{UnitRange}(undef, length(data))  # row ranges for each element of data
     rows[1] = 1:count_observations(data[1])
     for i in 2:length(data)

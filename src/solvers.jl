@@ -4,7 +4,7 @@ using IterativeSolvers
 using .BayesianLinear
 using LinearAlgebra: SVD, svd
 using ActiveSetPursuit
-
+using PythonCall
 @doc raw"""
 `struct QR` : linear least squares solver, using standard QR factorisation; 
 this solver computes 
@@ -150,6 +150,15 @@ function SKLEARN_ARD(; max_iter = 300, tol = 1e-3, threshold_lambda = 10000)
 end
 
 # solve(solver::SKLEARN_ARD, ...) is implemented in ext/
+
+struct POPSREGRESSION
+    max_iter::Integer
+    tol::Number
+end
+
+function POPSREGRESSION(; max_iter = 300, tol = 1e-3)
+    POPSREGRESSION(max_iter, tol)
+end
 
 @doc raw"""
 `struct TruncatedSVD` : linear least squares solver for approximately solving 
