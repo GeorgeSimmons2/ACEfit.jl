@@ -43,7 +43,7 @@ function ACEfit.solve(solver::ACEfit.POPSREGRESSION, A, y)
     clf.fit(A, y)
     c = clf.coef_
     @info "Pyconverted POPS coefficients: $(length(pyconvert(Array, c)))"
-    return Dict{String, Any}("C" => pyconvert(Array, c), "POPS_posterior" => pyconvert(Matrix, clf.hypercube_samples) )
+    return Dict{String, Any}("C" => pyconvert(Array, c), "POPS_posterior" => pyconvert(Matrix, clf.misspecification_sigma_) )
 end
 
 end
